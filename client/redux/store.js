@@ -15,14 +15,9 @@ const gotStudents = (students) => ({
 });
 
 const gotSingleStudent = (student) => ({
-  type: GOT_STUDENTS,
+  type: GOT_SINGLE_STUDENT,
   student,
 });
-
-// const gotTests = (tests) => ({
-//   type: GOT_STUDENTS,
-//   tests,
-// });
 
 // THUNK CREATORS go here:
 export const fetchStudents = () => async (dispatch) => {
@@ -34,11 +29,6 @@ export const fetchStudent = (id) => async (dispatch) => {
   const { data } = await axios.get(`/api/students/${id}`);
   dispatch(gotSingleStudent(data));
 };
-
-// export const fetchTests = () => async (dispatch) => {
-//   const { data } = await axios.get("/api/tests");
-//   dispatch(gotTests(data));
-// };
 
 const initialState = {
   students: [],
@@ -57,10 +47,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         student: action.student,
       };
-    // case GOT_TESTS:
-    //   return {
-    //     tests: action.tests,
-    //   };
     default:
       return state;
   }
