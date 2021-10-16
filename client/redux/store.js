@@ -19,9 +19,9 @@ const gotSingleStudent = (student) => ({
   student,
 });
 
-const gotStudentToDelete = (student) => ({
+const gotStudentToDelete = (id) => ({
   type: GOT_STUDENT_TO_DELETE,
-  student,
+  id,
 });
 
 // THUNK CREATORS go here:
@@ -37,7 +37,8 @@ export const fetchSingleStudent = (id) => async (dispatch) => {
 
 export const fetchStudentToDelete = (id) => async (dispatch) => {
   const { data } = await axios.delete(`/api/students/${id}`);
-  dispatch(gotStudentToDelete(data));
+  console.log(data);
+  dispatch(gotStudentToDelete(id));
 };
 
 const initialState = {
@@ -60,9 +61,7 @@ const reducer = (state = initialState, action) => {
     case GOT_STUDENT_TO_DELETE:
       return {
         ...state,
-        students: action.students.filter((student) => {
-          student.id !== action.student.id;
-        }),
+        students: state.students.filter((student) => student.id !== action.id),
       };
     default:
       return state;

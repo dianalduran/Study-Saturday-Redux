@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchStudents } from "../redux/store";
+import { fetchStudents, fetchStudentToDelete } from "../redux/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -22,7 +22,14 @@ class StudentList extends React.Component {
               <p>Email: {student.email}</p>
               <Link to={`/students/${student.id}`}>View Detail</Link>
               <div>
-                <Link to="/">Delete</Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    this.props.deleteStudent(student.id);
+                  }}
+                >
+                  Delete
+                </Link>
               </div>
             </div>
           </li>
@@ -38,6 +45,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadStudents: () => dispatch(fetchStudents()),
+  deleteStudent: (id) => dispatch(fetchStudentToDelete(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
