@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import { fetchStudent } from "../redux/store";
+import { connect } from "react-redux";
 
 const avgGrade = (tests) => {
   return Math.round(
@@ -6,39 +8,44 @@ const avgGrade = (tests) => {
   );
 };
 
-const DUMMY_DATA = {
-  id: 1,
-  fullName: "Student McDummydata",
-  firstName: "Student",
-  lastName: "McDummydata",
-  email: "sm@dummydata.com",
-  tests: [
-    {
-      id: 1,
-      subject: "Computer Science",
-      grade: 45,
-    },
-    {
-      id: 6,
-      subject: "Art",
-      grade: 60,
-    },
-    {
-      id: 12,
-      subject: "ullam",
-      grade: 45,
-    },
-  ],
-};
+// const DUMMY_DATA = {
+//   id: 1,
+//   fullName: "Student McDummydata",
+//   firstName: "Student",
+//   lastName: "McDummydata",
+//   email: "sm@dummydata.com",
+//   tests: [
+//     {
+//       id: 1,
+//       subject: "Computer Science",
+//       grade: 45,
+//     },
+//     {
+//       id: 6,
+//       subject: "Art",
+//       grade: 60,
+//     },
+//     {
+//       id: 12,
+//       subject: "ullam",
+//       grade: 45,
+//     },
+//   ],
+// };
 
 class SingleStudent extends React.Component {
   constructor(props) {
     super(props);
+    console.log("single student props", props);
+  }
+
+  componentDidMount() {
+    this.props.loadStudentInReact(this.props.match.params.id);
   }
 
   render() {
-    const student = DUMMY_DATA;
-    const hasTests = student.tests.length;
+    const student = this.props.student;
+    const hasTests = student.tests && student.tests.length;
 
     return (
       <div>
@@ -73,6 +80,23 @@ class SingleStudent extends React.Component {
       </div>
     );
   }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    student: state.student,
+  };
 };
 
-export default SingleStudent;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadStudentInReact: (id) => dispatch(fetchStudent(id)),
+  };
+};
+
+const connectedStudent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SingleStudent);
+
+export default connectedStudent;

@@ -1,11 +1,12 @@
-import React from 'react';
-import {fetchStudents} from '../redux/store';
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import React from "react";
+import { fetchStudents } from "../redux/store";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 class StudentList extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
   }
 
   componentDidMount() {
@@ -20,21 +21,22 @@ class StudentList extends React.Component {
             <div>
               <p>Name: {student.fullName}</p>
               <p>Email: {student.email}</p>
+              {/* we already have access to student */}
+              <Link to={`/students/${student.id}`}>View Detail</Link>
             </div>
           </li>
         ))}
       </ul>
-    )
-
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
-  students: state.students
+  students: state.students,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadStudents: () => dispatch(fetchStudents())
-})
+  loadStudents: () => dispatch(fetchStudents()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
